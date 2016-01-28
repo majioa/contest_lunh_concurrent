@@ -1,0 +1,18 @@
+if [ -d "$(pwd)/.bundle" ]; then
+   rvm use $(cat .ruby-version)@$(cat .ruby-gemset) --create
+   export PATH=$(pwd)/.bundle/bin:$PATH
+   export GEM_HOME=$(pwd)/.bundle
+   export GEM_PATH=$GEM_HOME:$GEM_PATH
+if [ -f .ruby-version -a -f .ruby-gemset ]; then
+   echo Setting bundle env...
+   cf=$(pwd)
+
+   rvm $(cat .ruby-version)@$(cat .ruby-gemset) --create
+   bundler=$(gem which bundler)
+#   export RUBYLIB=$(dirname $bundler)
+   export PATH=$cf/bin:$cf/.bundle/bin:$PATH
+#   export RUBYOPT=-rbundler/setup
+   export _ORIGINAL_GEM_PATH=$GEM_PATH
+   export GEM_PATH=$cf/.bundle:$GEM_PATH
+fi
+fi
